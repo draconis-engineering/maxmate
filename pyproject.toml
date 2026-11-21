@@ -1,11 +1,14 @@
 [project]
-name = "projectzero"
+license = { file = "LICENSE" }
+name = "visio"
 version = "0.1.0"
 description = "A frontier chess engine built by Draconis Engineering"
 readme = "README.md"
-authors = [{ name = "amundgaard09", email = "stordalamundgard@gmail.com" }]
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.12"
+dependencies = ["dracolix"]
+authors = [
+	{ name = "Simon Stordal Amundgård", email = "stordalamundgard@gmail.com" },
+]
 
 [build-system]
 requires = ["uv_build>=0.12.22,<0.13.0"]
