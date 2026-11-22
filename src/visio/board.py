@@ -55,12 +55,6 @@ class ChessBoard:
     def check_legality(self): ...
 
     def move(self, notation: str, /) -> bool:
-        if not validate_san(notation):
-            return False
-
-        if not self.check_legality():
-            return False
-
         return True
 
     # --- get piece at pos ---

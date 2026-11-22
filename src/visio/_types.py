@@ -8,9 +8,7 @@ _BISHOP = "bishop"
 _ROOK = "rook"
 _PAWN = "pawn"
 
-
-class ChessPiece: ...
-
+from .piece import ChessPiece
 
 type _Square = ChessPiece | None
-type _BoardType = list[list[_Square]]
+type _BoardType = list[list[_Square]]  # noqa pyi047

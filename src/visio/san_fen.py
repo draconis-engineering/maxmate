@@ -1,11 +1,19 @@
 import re
 
-from ._types import _BISHOP, _BLACK, _KING, _KNIGHT, _PAWN, _QUEEN, _ROOK, _WHITE
+from ._types import (
+    _BISHOP,
+    _BLACK,
+    _KING,
+    _KNIGHT,
+    _PAWN,
+    _QUEEN,
+    _ROOK,
+    _WHITE,
+    _BoardType,
+    _Square,
+)
 from .exceptions import InvalidFENError
 from .piece import ChessPiece
-
-type _Square = ChessPiece | None
-type _BoardType = list[list[_Square]]
 
 # ==========================================
 # SAN Notation / / / / / / / / / / / / / / /

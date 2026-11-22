@@ -1,8 +1,33 @@
 version = 1
 revision = 5
-requires-python = ">=3.14"
+requires-python = ">=3.12"
+
+[[package]]
+name = "dracolix"
+version = "0.3.6"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/67/a1/e7d06efc58da68e4a916cbd6bcfe455156836b9a9e32a80f9cb92599d94c/dracolix-0.3.6-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:8da456bd15e7621a5e0a95be44b3f4ccbfd3a1bc9dacdce60d8f2accce18e796", size = 352427, upload-time = "2026-11-12T15:36:55.674Z" },
+    { url = "https://files.pythonhosted.org/packages/20/54/db96fdf28e89ab3d5b5f282b10da49d2ee022bf3fd92a704c340b29d29f8/dracolix-0.3.6-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ea1b21e56f8c1c2b3c7d1971817ec0dbc8e1ac5f9d7cfa2f63f7227986ed83bb", size = 487931, upload-time = "2026-11-12T15:36:56.825Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/24/5ab36c26aaac644afa52f6609a22254bced0873c838e61d9704d28d63b1c/dracolix-0.3.6-cp312-cp312-win_amd64.whl", hash = "sha256:862b332b58f7c166edd2c2d4d2bc99b746f687d7cadee899dfe2a47bba975cbd", size = 587948, upload-time = "2026-11-12T15:36:58.003Z" },
+    { url = "https://files.pythonhosted.org/packages/db/3e/89a66df91912e33088e86d820cb5ad9863eb9c7c7177d0616208331672a6/dracolix-0.3.6-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:3e39101788ca5254205c01ca450a27fa46c12f30970af1d3551647f357c7916b", size = 352395, upload-time = "2026-11-12T15:36:59.338Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/32/6d3b814d1068803e586d57b1facede43f640a9fc1bf236e1433c5908f86e/dracolix-0.3.6-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9629dbebc57a8040c2e356c9de727458ebfcfb6de3f33353ec09edc9cd948c81", size = 487878, upload-time = "2026-11-12T15:37:00.593Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/30/d31b02a098740f93bd25d8c2f4d990d08105e3e99a5c35f081b4301bf2ab/dracolix-0.3.6-cp313-cp313-win_amd64.whl", hash = "sha256:d680d7faf10ff574540ba1b176546f5d65ae3a73c61c4197d8668b4a506c8846", size = 587876, upload-time = "2026-11-12T15:37:01.806Z" },
+    { url = "https://files.pythonhosted.org/packages/7b/d8/f994a62bfa5971d9a08b5ad0a9630abf0f3ed87438a7611aafa32e2fd10b/dracolix-0.3.6-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:067766008ce3c041c8fcf118894ace47c2b1264abd6f00ece444664d3526c955", size = 352689, upload-time = "2026-11-12T15:37:03.182Z" },
+    { url = "https://files.pythonhosted.org/packages/46/a6/7806df952e68ad80091c70eaa1986c119cfc84020d6715c3b3f94a493d78/dracolix-0.3.6-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:92b3cf0a3238d69ee3a50f292dc14ba2c835172fae5de546164ac1ec17ab3c84", size = 488172, upload-time = "2026-11-12T15:37:04.298Z" },
+    { url = "https://files.pythonhosted.org/packages/1e/6e/67196d155eb6d4fc0a5a0ef7198bade7e6680b1699b0fb469c80b173a181/dracolix-0.3.6-cp314-cp314-win_amd64.whl", hash = "sha256:9e8eb71b1a0e5fbd478446232b6f210be611561a14e050bec6b36a32021920f1", size = 607247, upload-time = "2026-11-12T15:37:05.537Z" },
+    { url = "https://files.pythonhosted.org/packages/70/57/6f8e34fb40f9ef96369aab3465ba055fc5de396226901c76690f3e8c8395/dracolix-0.3.6-cp315-cp315-macosx_11_0_arm64.whl", hash = "sha256:7427d1d9e6b061e7fc9a9904e8e96f8e16f50ca5c6c9398338662a7c6e9eef8d", size = 352926, upload-time = "2026-11-12T15:37:06.921Z" },
+    { url = "https://files.pythonhosted.org/packages/8d/54/ab7ddd4c36d322f27282bb7b1af8b19ffabc63ea2df8c0e8935df92cfd9c/dracolix-0.3.6-cp315-cp315-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:40fd1242ee434e44e64d568ad8a39a090ad699013217ed4d5df9d241324cd457", size = 488233, upload-time = "2026-11-12T15:37:07.909Z" },
+    { url = "https://files.pythonhosted.org/packages/74/5c/5822d7538cba05a695084bc85078549b46dfe8b0ae7e6450b2fe1db17dda/dracolix-0.3.6-cp315-cp315-win_amd64.whl", hash = "sha256:bb5c87823a6292954dcf4a0423e5d95ac9a47974660e779769309a8e54f7fff7", size = 607494, upload-time = "2026-11-12T15:37:09.136Z" },
+]
 
 [[package]]
 name = "visio"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "dracolix" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "dracolix" }]
