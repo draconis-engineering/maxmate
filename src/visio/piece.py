@@ -16,6 +16,14 @@ class ChessPiece:
         self._color = color
         self._cost = _COSTS[name]
 
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def color(self) -> str:
+        return self._color
+
     def __eq__(self, other: object, /) -> bool:
         return (
             isinstance(other, ChessPiece)
@@ -23,5 +31,8 @@ class ChessPiece:
             and self._color == other._color
         )
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return ""
+
+    def __repr__(self) -> str:
+        return f"ChessPiece({self._name!s}, {self._color!s})"

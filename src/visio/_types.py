@@ -8,6 +8,8 @@ _BISHOP = "bishop"
 _ROOK = "rook"
 _PAWN = "pawn"
 
+_VALID_PROMOS = {_QUEEN, _KNIGHT, _BISHOP, _ROOK}
+
 from .piece import ChessPiece
 
 type _Square = ChessPiece | None

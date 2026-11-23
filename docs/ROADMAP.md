@@ -23,15 +23,16 @@ Goal: the package imports, FEN parsing is trustworthy, and stubs fail loudly ins
 - [x] Make `build_board_from_fen()` validate or become private
     - [ ] document board orientation (row 0 = rank 8).
 - [x] Replace `board if board else ...` with an explicit `None` check in `ChessBoard.__init__` (`types.py:192`)
-    - [ ] Validate constructor state.
+    - [x] Validate constructor state.
 - [ ] Replace truthy stubs with either real implementations or explicit `NotImplementedError`
     - [ ] `check_legality()`
-    - [ ] `move()`
-    - [ ] `peek_algebraic()`
+    - [x] `move()`
+    - [x] `peek()`
 - [ ] Rewrite `save_log()` to use the supplied path, `datetime.now()`, a filesystem-safe filename, and actual content.
-- [ ] Add algebraic<->index coordinate helpers and `to_fen()` / `__str__` for round-tripping and debugging.
-- [ ] Unify color representation (`"w"/"b"` vs `"white"/"black"`) into one canonical type.
-- [ ] Export exceptions and public helpers from `__init__.py`; choose one error-handling convention (raise vs `bool`).
+- [x] Add algebraic<->index coordinate helpers and `to_fen()` / `__str__` for round-tripping and debugging.
+- [x] Unify color representation (`"w"/"b"` vs `"white"/"black"`) into one canonical type.
+- [ ] Export exceptions and public helpers from `__init__.py`
+- [WIP] Choose one error-handling convention (raise vs `bool`).
 - [x] Lower `requires-python` to `>=3.12` if no 3.14-only features are needed;
 - [ ] Add README content, license metadata, and test/lint/typecheck tooling.
 - [x] Stage the `projectzero` → `visio` rename so history and reviews are coherent.

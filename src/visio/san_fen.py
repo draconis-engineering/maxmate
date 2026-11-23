@@ -19,6 +19,8 @@ from .piece import ChessPiece
 # SAN Notation / / / / / / / / / / / / / / /
 # ==========================================
 
+SAN_PLACEMENT_ONLY_REGEX = re.compile(r"^[a-h][1-8]$")
+
 SAN_REGEX = re.compile(
     r"^(?:"
     r"O-O(?:-O)?"  # Castling (kingside or queenside)
@@ -33,7 +35,9 @@ SAN_REGEX = re.compile(
 )
 
 
-def validate_san(move: str) -> bool:
+def validate_san(move: str, *, is_pos: bool = False) -> bool:
+    if is_pos:
+        return bool(SAN_PLACEMENT_ONLY_REGEX.match(move.strip()))
     return bool(SAN_REGEX.match(move.strip()))
 
 

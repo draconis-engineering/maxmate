@@ -2,24 +2,24 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
 from datetime import datetime
 from pathlib import Path
 
-from ._types import _BoardType, _Square
+from src.visio.move import Move
+
+from ._types import _BLACK, _VALID_PROMOS, _WHITE, _BoardType, _Square
 from .exceptions import InvalidSANError
 from .piece import ChessPiece
 from .san_fen import _DEFAULT_FEN, build_board_from_fen, parse_fen, validate_san
+from .utils import (
+    _require_int,
+    algebraic_to_xy,
+    xy_to_algebraic,
+)
 
 # ====================================
 # Helpers /  /  /  /  /  /  /  /  /  /
 # ====================================
-
-
-def _require_int(o: Sequence[object], func: Callable) -> None:
-    for i in o:
-        if not isinstance(i, int) or isinstance(i, bool):
-            raise TypeError(f"function {func.__name__} requires integers")
 
 
 class ChessBoard:
@@ -33,6 +33,7 @@ class ChessBoard:
         half_moves: int = 0,
         full_moves: int = 1,
     ) -> None:
+        """Initializes a ChessBoard"""
 
         # --- Board State & Helpers ---
         self._board: _BoardType = (
@@ -44,33 +45,79 @@ class ChessBoard:
         self._half_moves = half_moves
         self._full_moves = full_moves
 
+        self._is_checked = {_WHITE: False, _BLACK: False}
+        self._is_mated = {_WHITE: False, _BLACK: False}
+
+        self._attack_map = [[False] * 8 for _ in range(8)]
+        self._last_board = list(self._board)
+
         # --- Engine Helpers ---
         self._move_log: list[str] = []
         self._taken_pieces: list[ChessPiece] = []
 
-    def __getitem__(self, idx: int, /) -> list[_Square]:
-        _require_int([idx], ChessBoard.__getitem__)
-        return self._board[idx]
+    def __getitem__(self, key: int, /) -> list[_Square]:
+        _require_int([key], ChessBoard.__getitem__)
+        return self._board[key]
 
-    def check_legality(self): ...
+    def check_legality(self, move: Move) -> bool:
+        """Checks if a move is legal based on the current game state"""
+        return NotImplemented
 
-    def move(self, notation: str, /) -> bool:
+    @staticmethod
+    def get_legal_moves() -> list[Move]:
+        """Returns all the current legal moves that the active color can do"""
+        return NotImplemented
+
+    def move(self, move: Move, /) -> bool:
+        """Performs a move"""
+
+        if move in self.get_legal_moves():  # This isnt correct though...
+            # Parse PosSAN
+            srcx, srcy = algebraic_to_xy(move.src)
+            destx, desty = algebraic_to_xy(move.dst)
+
+            # Update last_board
+            self._last_board = list(self._board)
+
+            # Move
+            self._board[destx][desty] = self._board[srcx][srcy]
+            self.pop(xy_to_algebraic(srcx, srcy))
+            return True
+
+        return False
+
+    def peek(self, san: str, /) -> _Square:
+        """Return either None or a ChessPiece object at the square specified by the notation"""
+        if not validate_san(san, is_pos=True):
+            raise InvalidSANError()
+
+        x, y = algebraic_to_xy(san)
+        return self._board[x][y]
+
+    def pop(self, san: str, /) -> bool:
+        """Clears a square on the board"""
+
+        if not validate_san(san, is_pos=True):
+            raise InvalidSANError()
+
+        x, y = algebraic_to_xy(san)
+        self._board[x][y] = None
         return True
-
-    # --- get piece at pos ---
-    def peek_algebraic(self, notation: str, /) -> _Square: ...
 
     @classmethod
     def from_fen(cls, fen: str, /) -> ChessBoard:
+        """Builds a ChessBoard from a FEN-string"""
         return cls(*parse_fen(fen))
 
     def log_move(self, san: str) -> None:
+        """Logs the last move"""
         if not validate_san(san):
             raise InvalidSANError("invalid SAN string -> logging of move failed")
 
         self._move_log.append(san)
 
     def save_log(self, path: Path):
+        """Saves the move log to a file for postgame analysis"""
         with open(str(path / f"log_{datetime.now()}.txt"), "x") as f:
             ...
 
