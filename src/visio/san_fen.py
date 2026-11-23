@@ -12,8 +12,8 @@ from ._types import (
     _BoardType,
     _Square,
 )
-from .exceptions import InvalidFENError
-from .piece import ChessPiece
+from .exceptions import InvalidFENError as _InvalidFENError
+from .piece import ChessPiece as _ChessPiece
 
 # ==========================================
 # SAN Notation / / / / / / / / / / / / / / /
@@ -47,33 +47,33 @@ def validate_san(move: str, *, is_pos: bool = False) -> bool:
 
 # Board, active color, castling rights, en passant avaliability, half moves, full moves
 _DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-_FEN_TO_PIECE: dict[str, ChessPiece] = {
-    "P": ChessPiece(_PAWN, _WHITE),
-    "N": ChessPiece(_KNIGHT, _WHITE),
-    "B": ChessPiece(_BISHOP, _WHITE),
-    "R": ChessPiece(_ROOK, _WHITE),
-    "Q": ChessPiece(_QUEEN, _WHITE),
-    "K": ChessPiece(_KING, _WHITE),
-    "p": ChessPiece(_PAWN, _BLACK),
-    "n": ChessPiece(_KNIGHT, _BLACK),
-    "b": ChessPiece(_BISHOP, _BLACK),
-    "r": ChessPiece(_ROOK, _BLACK),
-    "q": ChessPiece(_QUEEN, _BLACK),
-    "k": ChessPiece(_KING, _BLACK),
+_FEN_TO_PIECE: dict[str, _ChessPiece] = {
+    "P": _ChessPiece(_PAWN, _WHITE),
+    "N": _ChessPiece(_KNIGHT, _WHITE),
+    "B": _ChessPiece(_BISHOP, _WHITE),
+    "R": _ChessPiece(_ROOK, _WHITE),
+    "Q": _ChessPiece(_QUEEN, _WHITE),
+    "K": _ChessPiece(_KING, _WHITE),
+    "p": _ChessPiece(_PAWN, _BLACK),
+    "n": _ChessPiece(_KNIGHT, _BLACK),
+    "b": _ChessPiece(_BISHOP, _BLACK),
+    "r": _ChessPiece(_ROOK, _BLACK),
+    "q": _ChessPiece(_QUEEN, _BLACK),
+    "k": _ChessPiece(_KING, _BLACK),
 }
 
 
 def validate_fen(fen: str, /) -> None:
     parts = fen.split()
     if len(parts) != 6:
-        raise InvalidFENError(f"a FEN string needs 6 parts, not {len(parts)}")
+        raise _InvalidFENError(f"a FEN string needs 6 parts, not {len(parts)}")
 
     placement, turn, castling, ep, halfmove, fullmove = parts
 
     # Validate piece placement
     ranks = placement.split("/")
     if len(ranks) != 8:
-        raise InvalidFENError(f"FEN string ranks needs 8 parts, not {len(ranks)}")
+        raise _InvalidFENError(f"FEN string ranks needs 8 parts, not {len(ranks)}")
 
     # Validate board
     valid_pieces = set("prnbqkPRNBQK")
@@ -85,30 +85,30 @@ def validate_fen(fen: str, /) -> None:
             elif char in valid_pieces:
                 square_count += 1
             else:
-                raise InvalidFENError(f"Unknown chess character: {char}")
+                raise _InvalidFENError(f"Unknown chess character: {char}")
         if square_count != 8:
-            raise InvalidFENError(f"Invalid board dimension: {square_count}")
+            raise _InvalidFENError(f"Invalid board dimension: {square_count}")
 
     # Validate active color
     if turn not in {"w", "b"}:
-        raise InvalidFENError(f"Invalid chess color: {turn}")
+        raise _InvalidFENError(f"Invalid chess color: {turn}")
 
     # Validate castling availability
     if not re.fullmatch(r"-|K?Q?k?q?", castling):
-        raise InvalidFENError(f"Invalid castling configuration: {castling}")
+        raise _InvalidFENError(f"Invalid castling configuration: {castling}")
 
     # Validate en passant target square
     if not re.fullmatch(r"-|[a-h][36]", ep):
-        raise InvalidFENError(f"Invalid en passant configuration: {ep}")
+        raise _InvalidFENError(f"Invalid en passant configuration: {ep}")
 
     # Validate halfmove clock and fullmove number
     if not halfmove.isdigit() and fullmove.isdigit() and int(fullmove) >= 1:
-        raise InvalidFENError(
+        raise _InvalidFENError(
             f"Invalid halfmove/fullmove counts: {halfmove}, {fullmove}"
         )
 
     if placement.count("K") != 1 or placement.count("k") != 1:
-        raise InvalidFENError("king(s) is missing")
+        raise _InvalidFENError("king(s) is missing")
 
 
 def _build_row_from_fen_rank(rank: str, /) -> list[_Square]:

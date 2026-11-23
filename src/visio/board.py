@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 
 from src.visio.move import Move
 
-from ._types import _BLACK, _VALID_PROMOS, _WHITE, _BoardType, _Square
+from ._types import _BLACK, _WHITE, _BoardType, _Square
 from .exceptions import InvalidSANError
 from .piece import ChessPiece
 from .san_fen import _DEFAULT_FEN, build_board_from_fen, parse_fen, validate_san
@@ -59,6 +58,18 @@ class ChessBoard:
         _require_int([key], ChessBoard.__getitem__)
         return self._board[key]
 
+    def is_square_attacked(self, san: str) -> bool:
+        validate_san(san, is_pos=True)
+        return True
+
+    def update_attack_map(self) -> None:
+        for x, rank in enumerate(self._board):
+            for y, square in enumerate(rank):
+                if self.is_square_attacked(xy_to_algebraic(x, y)):
+                    self._attack_map[x][y] = True
+                else:
+                    self._attack_map[x][y] = False
+
     def check_legality(self, move: Move) -> bool:
         """Checks if a move is legal based on the current game state"""
         return NotImplemented
@@ -73,8 +84,8 @@ class ChessBoard:
 
         if move in self.get_legal_moves():  # This isnt correct though...
             # Parse PosSAN
-            srcx, srcy = algebraic_to_xy(move.src)
-            destx, desty = algebraic_to_xy(move.dst)
+            srcx, srcy = move.src_xy
+            destx, desty = move.dst_xy
 
             # Update last_board
             self._last_board = list(self._board)
@@ -104,10 +115,14 @@ class ChessBoard:
         self._board[x][y] = None
         return True
 
+    # Pre/post-game helpers -------------------
+
     @classmethod
     def from_fen(cls, fen: str, /) -> ChessBoard:
         """Builds a ChessBoard from a FEN-string"""
         return cls(*parse_fen(fen))
+
+    def export_fen(self) -> str: ...
 
     def log_move(self, san: str) -> None:
         """Logs the last move"""
@@ -118,8 +133,8 @@ class ChessBoard:
 
     def save_log(self, path: Path):
         """Saves the move log to a file for postgame analysis"""
-        with open(str(path / f"log_{datetime.now()}.txt"), "x") as f:
-            ...
+        # with open(str(path / f"log_{datetime.now()}.txt"), "x") as f:
+        #    ...
 
 
 __all__ = ["ChessBoard"]

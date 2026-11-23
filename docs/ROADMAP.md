@@ -47,9 +47,11 @@ Exit criteria:
 
 Goal: a fully legal, serializable game of chess with no AI yet.
 
-- [x] Introduce a `Move` value type: from-square, to-square, promotion piece, and flags (capture, en passant, castling, double pawn push).
+- [x] Introduce a `Move` value type: from-square, to-square, promotion piece
+    - [ ] Flags (capture, en passant, castling, double pawn push).
 - [ ] Implement board coordinate helpers, square iteration, and attack maps / `is_square_attacked()`.
-- [ ] Generate pseudo-legal moves for every piece; filter by own-king safety to get legal moves.
+- [WIP] Generate pseudo-legal moves for every piece
+    - [ ] Filter by own-king safety to get legal moves.
 - [ ] Implement make/unmake (or copy) that updates: active color, castling rights, EP target, halfmove clock, fullmove number, captured pieces, and history stack.
 - [ ] Implement special rules: castling (rights, empty squares, not through/out of check), en passant (including pinned edge cases), promotion to Q/R/B/N.
 - [ ] Implement game-end detection: check, checkmate, stalemate, 50-move rule, threefold repetition, insufficient material / dead position.

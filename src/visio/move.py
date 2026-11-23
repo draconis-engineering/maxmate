@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from src.visio.exceptions import InvalidSANError
 from src.visio.piece import ChessPiece
-from src.visio.utils import xy_to_algebraic
+from src.visio.utils import algebraic_to_xy, validate_within_bounds, xy_to_algebraic
 
 from ._types import _BLACK, _WHITE
 from .san_fen import validate_san
@@ -25,8 +25,21 @@ class Move:
 
     def to_san(self) -> str: ...
 
+    @property
+    def src_xy(self) -> tuple[int, int]:
+        return algebraic_to_xy(self.src)
+
+    @property
+    def dst_xy(self) -> tuple[int, int]:
+        return algebraic_to_xy(self.dst)
+
     @classmethod
-    def from_san(cls, san: str, /) -> Move:
+    def from_xy(cls, srcx: int, srcy: int, dstx: int, dsty: int) -> Move:
+        validate_within_bounds([srcx, srcy, dstx, dsty], 0, 7)
+        return Move.from_xy(srcx, srcy, dstx, dsty)
+
+    @classmethod
+    def from_san(cls, san: str, board, /) -> Move:
         validate_san(san)
         return NotImplemented
 
@@ -52,7 +65,7 @@ def recursive_directional_fetch(
     if color not in {_WHITE, _BLACK}:
         raise ValueError(f"unknown color: {color}")
 
-    if nx < 0 or nx > 7 or ny < 0 or ny > 7:
+    if not validate_within_bounds([nx, ny], 0, 7):
         return moves
 
     target = board.peek(xy_to_algebraic(nx, ny))
@@ -141,4 +154,24 @@ def rook_moves(x: int, y: int) -> list[Move]: ...
 def knight_moves(x: int, y: int) -> list[Move]: ...
 def bishop_moves(x: int, y: int) -> list[Move]: ...
 def queen_moves(x: int, y: int) -> list[Move]: ...
-def king_moves(x: int, y: int) -> list[Move]: ...
+
+
+def king_moves(x: int, y: int, board, color: str) -> list[Move]:
+    if color not in {_WHITE, _BLACK}:
+        raise ValueError(f"invalid color: {color}")
+
+    nxs, nys = (
+        (x - 1, x, x + 1, x - 1, x + 1, x - 1, x, x + 1),
+        (y + 1, y + 1, y + 1, y, y, y - 1, y - 1, y - 1),
+    )
+
+    moves = [Move.from_xy(x, y, nx, ny) for nx, ny in zip(nxs, nys)]
+
+    ### needs fixing
+    for move in moves:
+        trgt_sqr = board.peek(move.dst)
+        if trgt_sqr is None:
+            continue  # valid
+        if trgt_sqr.color != color:
+            continue
+    return moves

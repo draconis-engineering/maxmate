@@ -9,6 +9,10 @@ def _require_int(o: Sequence[object], func: Callable) -> None:
             raise TypeError(f"function {func.__name__} requires integers")
 
 
+def validate_within_bounds(o: Sequence[int], lower: int, upper: int) -> bool:
+    return all(lower <= x <= upper for x in o)
+
+
 COO_MAPPING: dict[str, int] = {
     "a": 1,
     "b": 2,
