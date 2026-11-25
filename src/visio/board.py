@@ -59,12 +59,13 @@ class ChessBoard:
         return self._board[key]
 
     def is_square_attacked(self, san: str) -> bool:
-        validate_san(san, is_pos=True)
+        if not validate_san(san, is_pos=True):
+            raise InvalidSANError()
         return True
 
     def update_attack_map(self) -> None:
         for x, rank in enumerate(self._board):
-            for y, square in enumerate(rank):
+            for y, _ in enumerate(rank):
                 if self.is_square_attacked(xy_to_algebraic(x, y)):
                     self._attack_map[x][y] = True
                 else:

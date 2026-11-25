@@ -64,7 +64,7 @@ _FEN_TO_PIECE: dict[str, _ChessPiece] = {
 
 
 def validate_fen(fen: str, /) -> None:
-    parts = fen.split()
+    parts = fen.strip().split()
     if len(parts) != 6:
         raise _InvalidFENError(f"a FEN string needs 6 parts, not {len(parts)}")
 

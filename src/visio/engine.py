@@ -1,4 +1,6 @@
-from .board import ChessBoard  # noqa: F401
+from .board import ChessBoard
 
 
-class Engine: ...
+class Engine:
+    def __init__(self) -> None:
+        self._instance = ChessBoard()

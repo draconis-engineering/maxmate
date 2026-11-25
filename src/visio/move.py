@@ -101,9 +101,9 @@ def pawn_moves(
     src = xy_to_algebraic(x, y)
 
     # White moves up (+y), Black moves down (-y)
-    direction = 1 if color == _WHITE else -1
-    start_rank = 1 if color == _WHITE else 6
-    promo_rank = 7 if color == _WHITE else 0
+    direction: int = 1 if color == _WHITE else -1
+    start_rank: int = 1 if color == _WHITE else 6
+    promo_rank: int = 7 if color == _WHITE else 0
 
     next_y = y + direction
 
