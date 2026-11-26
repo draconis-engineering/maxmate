@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 
 from src.visio.move import Move
@@ -47,7 +48,8 @@ class ChessBoard:
         self._is_checked = {_WHITE: False, _BLACK: False}
         self._is_mated = {_WHITE: False, _BLACK: False}
 
-        self._attack_map = [[False] * 8 for _ in range(8)]
+        self._white_attack_map = [[False] * 8 for _ in range(8)]
+        self._black_attack_map = [[False] * 8 for _ in range(8)]
         self._last_board = list(self._board)
 
         # --- Engine Helpers ---
@@ -58,18 +60,19 @@ class ChessBoard:
         _require_int([key], ChessBoard.__getitem__)
         return self._board[key]
 
-    def is_square_attacked(self, san: str) -> bool:
+    # Attacked by white, black or both
+    def is_square_attacked(self, san: str) -> tuple[bool, bool]:
         if not validate_san(san, is_pos=True):
             raise InvalidSANError()
-        return True
+        _x, _y = algebraic_to_xy(san)
+        return True, True
 
     def update_attack_map(self) -> None:
         for x, rank in enumerate(self._board):
             for y, _ in enumerate(rank):
-                if self.is_square_attacked(xy_to_algebraic(x, y)):
-                    self._attack_map[x][y] = True
-                else:
-                    self._attack_map[x][y] = False
+                self._white_attack_map[x][y], self._black_attack_map[x][y] = (
+                    self.is_square_attacked(xy_to_algebraic(x, y))
+                )
 
     def check_legality(self, move: Move) -> bool:
         """Checks if a move is legal based on the current game state"""
@@ -134,8 +137,8 @@ class ChessBoard:
 
     def save_log(self, path: Path):
         """Saves the move log to a file for postgame analysis"""
-        # with open(str(path / f"log_{datetime.now()}.txt"), "x") as f:
-        #    ...
+        with open(str(path / f"log_{datetime.now()}.txt"), "x") as f:
+            f.write(" ".join(move for move in self._move_log))
 
 
 __all__ = ["ChessBoard"]
